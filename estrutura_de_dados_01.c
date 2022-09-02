@@ -21,10 +21,16 @@ typedef struct {
 } Origin;
 
 typedef struct {
-	Identity identity;
 	Destiny destiny;
 	Origin origin;
+	bool round_trip;
+} Travel;
+
+typedef struct {
+	Identity identity;
+	Travel travel;
 	float price;
+	bool confirm;
 } Order;
 
 enum All_regions { // REGION
@@ -63,6 +69,9 @@ typedef enum { // NORTE
 
 const char* northA[] = {"RIO BRANCO", "MACAPÁ", "MANAUS", "BELÉM", "PORTO VELHO", "BOA VISTA", "PALMAS", 0};
 
+Order new_order(Order order);
+
+
 void clear() {
 	system("@cls||clear");
 }
@@ -84,9 +93,7 @@ void display_capitals(const char* capitals[]) {
 		printf("\n%d - %s", i+1, capitals[i]);
 		i++;
 	}
-
 }
-
 
 void welcome() {
 	display("BEM VINDO!");
@@ -125,132 +132,281 @@ int read_where(int number) {
 	int confirm = 0;
 
 	do {
-		puts("\n\nINSIRA NUMERO CORRESPONDENTE: ");
+		puts("\n\nOPCAO DESEJADA: ");
 		scanf("%d", &confirm);
 	} while (confirm <1 || confirm > number);
 
 	return confirm;
 }
 
-Identity set_identity(Identity id) {
+Order set_identity(Order id) {
 
 	display("CADASTRO: DADOS PESSOAIS");
 
 	printf("NOME: ");
-	fgets(id.name, 100, stdin);
+	fgets(id.identity.name, 100, stdin);
 
 	printf("CPF: ");
-	fgets(id.cpf, 20, stdin);
+	fgets(id.identity.cpf, 20, stdin);
 
 	printf("IDADE: ");
-	scanf("%d", &id.age);
+	scanf("%d", &id.identity.age);
 
 	return id;
 }
 
-Identity get_identity(Identity id) {
+Order get_identity(Order id) {
 
 	break_line();
 	printf("IDENTIDADE:");
-	printf("\n\nNOME: %s",id.name);
-	printf("CPF: %s",id.cpf);
-	printf("IDADE: %d",id.age);
-
+	break_line();
+	
+	printf("\n\nNOME: %s",id.identity.name);
+	printf("CPF: %s",id.identity.cpf);
+	printf("IDADE: %d",id.identity.age);
 	break_line();
 }
 
-Origin set_origin_region(Origin origin) {
+Order get_origin(Order order) {
+	break_line();
+	printf("SAIDA: %s", order.travel.origin.capital);
+	break_line();
+}
 
-	display("ORIGEM: REGIÃO");
-	for(int i = 0; i< Norte; i++) {
-		printf("\n%d - %s", i+1, regionA[i]);
+Order get_destiny(Order order) {
+	break_line();
+	printf("DESTINO: %s", order.travel.destiny.capital);
+	break_line();
+}
+
+Order get_price(Order order) {
+	break_line();
+	printf("TOTAL: R$ %f", order.price);
+	break_line();
+}
+
+void display_region() {
+	for(int i = 0; i< Norte; i++)
+	printf("\n%d - %s", i+1, regionA[i]);
+}
+
+Order set_region(Order order, int origin_or_destiny) {
+	
+	if (origin_or_destiny == 1) {
+		
+		display("ORIGEM: REGIÃO");
+		display_region();
+		
+		break_line();
+		int take_region = read_where(5);
+		order.travel.origin.region = take_region;
+		
+		return order;
 	}
-
-	int take_region = read_where(5);
-	origin.region = take_region;
-
-	return origin;
+	
+	if (origin_or_destiny == 2) {
+		
+		display("DESTINO: REGIÃO");
+		display_region();
+		
+		break_line();
+		int take_region = read_where(5);
+		order.travel.destiny.region = take_region;
+		
+		return order;
+	}
 }
 
-Origin get_origin_region(Origin origin) {
-	break_line();
-	printf("%d - %s", origin.region, regionA[origin.region - 1]);
+Order body_set_origin_or_destiny_capital(Order order, const char** array, int origin_or_destiny) {
+	
+	if (origin_or_destiny == 1) {
+
+		display_capitals(array);
+		int j = read_where(sizeof(array));
+		order.travel.origin.capital = array[j - 1];
+		
+		return order;
+	}
+	
+	if (origin_or_destiny == 2) {
+
+		display_capitals(array);
+		int j = read_where(sizeof(array));
+		order.travel.destiny.capital = array[j - 1];
+		
+		return order;
+	}
 }
 
-Origin body_set_origin_capital(Origin origin, const char** array) {
+Order set_capital(Order order, int origin_or_destiny) {
+	
+	int chose;
+	
+	if (origin_or_destiny == 1) {
+		display("ORIGEM: CAPITAL");
+		
+		chose = order.travel.origin.region;
+	}
+	
+	else if (origin_or_destiny == 2) {
+		display("DESTINO: CAPITAL");
 
-	display_capitals(array);
-	int j = read_where(sizeof(array));
-	origin.capital = array[j - 1];
-
-	return origin;
-
-}
-
-Origin set_origin_capital(Origin origin) {
-
-	display("ORIGEM: CAPITAL");
-
-	switch (origin.region) {
+		chose = order.travel.destiny.region;
+	}
+	
+	printf("%d", order.travel.destiny.region)
+	
+	switch (chose) {
 		case 1: {
 
-			origin = body_set_origin_capital(origin, southA);
+			order = body_set_origin_or_destiny_capital(order, southA, origin_or_destiny);
 
-			return origin;
+			return order;
 			break;
 		}
 
 		case 2: {
 
-			origin = body_set_origin_capital(origin, southeastA);
+			order = body_set_origin_or_destiny_capital(order, southeastA, origin_or_destiny);
 
-			return origin;
+			return order;
 			break;
 		}
 
 		case 3: {
 
-			origin = body_set_origin_capital(origin, midwestA);
+			order = body_set_origin_or_destiny_capital(order, midwestA, origin_or_destiny);
 
-			return origin;
+			return order;
 			break;
 		}
 
 		case 4: {
 
-			origin = body_set_origin_capital(origin, northeastA);
+			order = body_set_origin_or_destiny_capital(order, northeastA, origin_or_destiny);
 
-			return origin;
+			return order;
 			break;
 		}
 
 		case 5: {
 
-			origin = body_set_origin_capital(origin, northA);
+			order = body_set_origin_or_destiny_capital(order, northA, origin_or_destiny);
 			
-			return origin;
+			return order;
 			break;
 		}
 	}
 }
 
+Order price_calc(Order order) {
+	
+	int origin = order.travel.origin.region;
+	int destiny = order.travel.destiny.region;
+	
+	order.price = 100;
+	
+	if (origin > destiny) {
+		while (origin > destiny) {
+			order.price += 100;
+			destiny++;
+		}
+	}
+	
+	if (origin < destiny) {
+		while (origin < destiny) {
+			order.price += 100;
+			origin++;
+		}
+	}
+	return order;
+}
+
+Order two_tickets(Order order) {
+	display("IDA E VOLTA?");
+	printf("1 - SIM\n");
+	printf("2 - NÃO");
+	break_line();
+	
+	int option = read_where(2);
+	
+	if (option == 1) {
+		order.price = order.price * 2;
+		order.travel.round_trip = true;
+	};
+	return order;
+}
+
+Order print_order(Order order) {
+	
+	get_identity(order);
+	get_origin(order);
+	get_destiny(order);
+	
+	if (order.travel.round_trip == true)
+		printf("IDA E VOLTA: SIM");
+	
+	else {
+		printf("IDA E VOLTA: NÃO");	
+	}
+	
+	get_price(order);
+}
+
+void success() {
+	display("PARABENS!");
+	printf("Obrigado por testar meu codigo! Volte sempre!\n\n");
+	
+	int i;
+	for(i=3; i>0; i--) {
+		printf("Finalizando em em %d \r", i);
+		Sleep(1000);
+	}
+}
+
+Order confirm(Order order) {
+	break_line();
+	printf("CONFIRMAR? \n1 - SIM\n2 - NÃO");
+	int confirm = read_where(2);
+	
+	if (confirm == 1) {
+		order.confirm = true;
+		success();
+	}
+	
+	display("GOSTARIA DE TENTAR NOVAMENTE? \n1 - SIM\n2 - NÃO");
+	confirm = read_where(2);
+		
+	if (confirm == 1) {
+		new_order(order);
+	}
+}
+
+Order new_order(Order order) {
+	order = set_identity(order);
+	
+	order = set_region(order, 1);
+	order = set_capital(order, 1);
+	
+	order = set_region(order, 2);
+	order = set_capital(order, 2);
+	
+	order = price_calc(order);
+	order = two_tickets(order);
+	
+	print_order(order);
+	
+	confirm(order);
+}
+
 int main() {
 
 	setlocale(LC_ALL, "Portuguese");
-	/*
+	
 	welcome();
-
-	Identity id;
-	id = set_identity(id);
-	get_identity(id);
-
-	*/
-	Origin ori;
-	ori = set_origin_region(ori);
-	// get_origin_region(ori);
-
-	ori = set_origin_capital(ori);
-	// get_origin_capital();
-
+	
+	Order ticket;
+	new_order(ticket);
+	
 	return 0;
 }
