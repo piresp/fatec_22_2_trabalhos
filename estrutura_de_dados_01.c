@@ -254,8 +254,6 @@ Order set_capital(Order order, int origin_or_destiny) {
 		chose = order.travel.destiny.region;
 	}
 	
-	printf("%d", order.travel.destiny.region)
-	
 	switch (chose) {
 		case 1: {
 
@@ -382,7 +380,15 @@ Order confirm(Order order) {
 	}
 }
 
-Order new_order(Order order) {
+
+int main() {
+
+	setlocale(LC_ALL, "Portuguese");
+	
+	welcome();
+	
+	Order order;
+	
 	order = set_identity(order);
 	
 	order = set_region(order, 1);
@@ -397,16 +403,12 @@ Order new_order(Order order) {
 	print_order(order);
 	
 	confirm(order);
-}
-
-int main() {
-
-	setlocale(LC_ALL, "Portuguese");
 	
-	welcome();
-	
-	Order ticket;
-	new_order(ticket);
 	
 	return 0;
+}
+
+
+Order new_order(Order order) {
+	main();
 }
