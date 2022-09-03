@@ -27,10 +27,15 @@ typedef struct {
 } Travel;
 
 typedef struct {
+	
 	Identity identity;
 	Travel travel;
+	
 	float price;
+	
 	bool confirm;
+	bool again;
+	
 } Order;
 
 enum All_regions { // REGION
@@ -77,7 +82,7 @@ void clear() {
 }
 
 void break_line() {
-	printf("\n--------------------------------\n");
+	printf("\n- - - - - - - - - - - - - - - - - - -\n");
 }
 
 void display(const char* menu) {
@@ -87,43 +92,33 @@ void display(const char* menu) {
 	break_line();
 }
 
+void display_region() {
+	for(int i = 0; i< Norte; i++)
+	printf("\n%d - %s", i+1, regionA[i]);
+	
+	printf("\n");
+}
+
 void display_capitals(const char* capitals[]) {
 	int i;
 	while (capitals[i] != '\0') {
 		printf("\n%d - %s", i+1, capitals[i]);
 		i++;
 	}
+	printf("\n");
+	break_line();
 }
 
 void welcome() {
 	display("BEM VINDO!");
-	printf("O programa a seguir simula a compra de tickets para viajar\npor uma companhia ficticia de viacao.\n\nDesenvolvido com fins academicos\npor: Gabriel Firmino Pires Pereira\n\nLinkedIn: https://www.linkedin.com/in/devpires/\n\n");
+	printf("\nO programa a seguir simula a compra de tickets para viajar\npor uma companhia ficticia de viacao.\n\nDesenvolvido com fins academicos\npor: Gabriel Firmino Pires Pereira\n\nLinkedIn: https://www.linkedin.com/in/devpires/\n");
+	break_line();
+	printf("\n");
 	Sleep(2000);
 
 	int i;
 	for(i=3; i>0; i--) {
-		printf("Iniciado em %d \r", i);
-		Sleep(1000);
-	}
-}
-
-void restart() {
-	display("FIQUEI COM PREGUIÇA DE IMPLEMENTAR!");
-	break_line();
-	printf("Ele não vai reiniciar sozinho kkkk...\n\n");
-	int i;
-	for(i=5; i>0; i--) {
-		printf("Finalizando programa em em %d \r", i);
-		Sleep(1000);
-	}
-}
-
-void end() {
-	display("OBRIGADO, VOLTE SEMPRE!");
-
-	int i;
-	for(i=5; i>0; i--) {
-		printf("Finalizando programa em em %d \r", i);
+		printf("INICIANDO EM: %d \r", i);
 		Sleep(1000);
 	}
 }
@@ -140,54 +135,21 @@ int read_where(int number) {
 }
 
 Order set_identity(Order id) {
-
-	display("CADASTRO: DADOS PESSOAIS");
-
-	printf("NOME: ");
-	fgets(id.identity.name, 100, stdin);
-
-	printf("CPF: ");
-	fgets(id.identity.cpf, 20, stdin);
-
-	printf("IDADE: ");
-	scanf("%d", &id.identity.age);
-
-	return id;
-}
-
-Order get_identity(Order id) {
-
-	break_line();
-	printf("IDENTIDADE:");
-	break_line();
 	
-	printf("\n\nNOME: %s",id.identity.name);
-	printf("CPF: %s",id.identity.cpf);
-	printf("IDADE: %d",id.identity.age);
-	break_line();
-}
+	if (id.again == false) {
+		display("CADASTRO: DADOS PESSOAIS");
 
-Order get_origin(Order order) {
-	break_line();
-	printf("SAIDA: %s", order.travel.origin.capital);
-	break_line();
-}
+		printf("\nNOME: ");
+		fgets(id.identity.name, 50, stdin) - '0';
 
-Order get_destiny(Order order) {
-	break_line();
-	printf("DESTINO: %s", order.travel.destiny.capital);
-	break_line();
-}
+		printf("CPF: ");
+		fgets(id.identity.cpf, 20, stdin) - '0';
 
-Order get_price(Order order) {
-	break_line();
-	printf("TOTAL: R$ %f", order.price);
-	break_line();
-}
-
-void display_region() {
-	for(int i = 0; i< Norte; i++)
-	printf("\n%d - %s", i+1, regionA[i]);
+		printf("IDADE: ");
+		scanf("%d", &id.identity.age) - '0';
+	}
+	
+	return id;
 }
 
 Order set_region(Order order, int origin_or_destiny) {
@@ -231,7 +193,7 @@ Order body_set_origin_or_destiny_capital(Order order, const char** array, int or
 	if (origin_or_destiny == 2) {
 
 		display_capitals(array);
-		int j = read_where(sizeof(array));
+		int j = read_where(sizeof(array) + 1);
 		order.travel.destiny.capital = array[j - 1];
 		
 		return order;
@@ -322,8 +284,8 @@ Order price_calc(Order order) {
 
 Order two_tickets(Order order) {
 	display("IDA E VOLTA?");
-	printf("1 - SIM\n");
-	printf("2 - NÃO");
+	printf("\n1 - SIM\n");
+	printf("2 - NÃO\n");
 	break_line();
 	
 	int option = read_where(2);
@@ -332,62 +294,102 @@ Order two_tickets(Order order) {
 		order.price = order.price * 2;
 		order.travel.round_trip = true;
 	};
+	
+	if (option == 2) {
+		order.travel.round_trip = false;	
+	}
+	
 	return order;
+}
+
+Order get_identity(Order id) {
+	
+	break_line();
+	printf("\n\tIDENTIDADE:\n\n\n");
+	
+	printf("NOME: %s",id.identity.name);
+	printf("CPF: %s",id.identity.cpf);
+	printf("IDADE: %d\n",id.identity.age);
+	break_line();
+}
+
+Order get_travel(Order order) {
+	
+	printf("\n\tTRAJETO:\n\n\n");
+	
+	printf("SAIDA: %s\n", order.travel.origin.capital);
+	printf("DESTINO: %s\n", order.travel.destiny.capital);
+	
+	if (order.travel.round_trip == true) {
+		printf("\nIDA E VOLTA: SIM\n");
+	}
+		
+	if (order.travel.round_trip == false){
+		printf("\nIDA E VOLTA: NAO\n");	
+	};
+	
+	break_line();
+}
+
+Order get_price(Order order) {
+	printf("\nTOTAL: R$ %.2f \n", order.price);
 }
 
 Order print_order(Order order) {
 	
+	clear();
+	
+	printf("\n\tTICKET - NUMERO: %d\n", rand());
+	
 	get_identity(order);
-	get_origin(order);
-	get_destiny(order);
-	
-	if (order.travel.round_trip == true)
-		printf("IDA E VOLTA: SIM");
-	
-	else {
-		printf("IDA E VOLTA: NÃO");	
-	}
-	
+	get_travel(order);
 	get_price(order);
 }
 
-void success() {
+Order success(Order order) {
 	display("PARABENS!");
-	printf("Obrigado por testar meu codigo! Volte sempre!\n\n");
+	printf("COMPRA EFETUADA COM SUCESSO!\n\n");
 	
 	int i;
 	for(i=3; i>0; i--) {
-		printf("Finalizando em em %d \r", i);
+		printf("DISPONIBILIZANDO TICKET EM: %d \r", i);
 		Sleep(1000);
 	}
+	print_order(order);
 }
 
 Order confirm(Order order) {
+	order.again = false;
 	break_line();
-	printf("CONFIRMAR? \n1 - SIM\n2 - NÃO");
+	printf("\n\nCONFIRMAR? \n1 - SIM\n2 - NÃO");
 	int confirm = read_where(2);
 	
 	if (confirm == 1) {
 		order.confirm = true;
-		success();
+		success(order);
 	}
 	
-	display("GOSTARIA DE TENTAR NOVAMENTE? \n1 - SIM\n2 - NÃO");
-	confirm = read_where(2);
+	if (confirm == 2) {
+		display("GOSTARIA DE TENTAR NOVAMENTE?");
+		printf("\n1 - SIM\n2 - NÃO\n");
+		break_line();
+		confirm = read_where(2);
 		
-	if (confirm == 1) {
-		new_order(order);
+		if (confirm == 1) {
+			order.again = true;
+			new_order(order);
+		}
 	}
 }
 
 
 int main() {
-
+	
+	Order order;
+	
 	setlocale(LC_ALL, "Portuguese");
 	
 	welcome();
-	
-	Order order;
 	
 	order = set_identity(order);
 	
@@ -403,7 +405,6 @@ int main() {
 	print_order(order);
 	
 	confirm(order);
-	
 	
 	return 0;
 }
