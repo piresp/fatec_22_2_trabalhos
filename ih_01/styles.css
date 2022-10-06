@@ -40,25 +40,15 @@ body {
 
 .box__login--items {
     padding: 1.2em 3em;
+    margin-top: 2em;
     border: none;
     border-radius: 10px;
+    display: block;
 }
 
 .box__login--form {
     align-items: center;
     text-align: center;
-}
-
-.box__login--items {
-    display: block;
-}
-
-.box__login--items-senha, .box__login--items-email {
-    margin-top: 2em;
-}
-
-.box__login--items-senha::before {
-    content: '\e90f';
 }
 
 .box__login--items-enviar {
