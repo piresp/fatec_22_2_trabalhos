@@ -1,33 +1,102 @@
-body {
+:root {
+    --branco-principal: #FFFFFF;
+    --cinza-secundario: #95999C;
+    --azul: #167BF7;
+    --cor-de-fundo: #1D232A;
+    --laranja-hover: #FF8C00;
+}
 
-    justify-content: center;
+body {
+    font-family: 'Poppins', sans-serif;
     align-items: center;
-    
+    text-align: center;
 }
 
 .box__login {
-    height: 50vh;
+    height: 60vh;
 
     margin-top: 10em;
     display: grid;
+
+    background: var(--cor-de-fundo);
     
-    grid-gap: 1em;
     grid-column: span 2;
     grid-column-start: 2;
     grid-row-start: 2;
-    
 
-    grid-template-rows: auto auto auto ;
+    grid-template-rows: auto;
 
     justify-content: center;
     align-items: center;
 }
 
 .box__login--title {
+    margin-top: 1.8em;
     justify-self: center;
+    font-size: 23px;
+    font-weight: 700;
+    color: var(--branco-principal);
 }
 
 .box__login--items {
-    display: inline-block;
+    padding: 1.2em 3em;
+    border: none;
+    border-radius: 10px;
 }
 
+.box__login--form {
+    align-items: center;
+    text-align: center;
+}
+
+.box__login--items {
+    display: block;
+}
+
+.box__login--items-senha, .box__login--items-email {
+    margin-top: 2em;
+}
+
+.box__login--items-senha::before {
+    content: '\e90f';
+}
+
+.box__login--items-enviar {
+    margin-top: 1em;
+
+    background-color: var(--azul);
+    border-radius: 10px;
+    padding: 0.7em;
+    color: var(--branco-principal);
+    display: block;
+    text-decoration: none;
+
+    transition: 1s all;
+}
+
+.box__login--items-enviar:hover {
+	transform: scale(1.1);
+    color: var(--branco-principal);
+    background: var(--laranja-hover);
+}
+
+.box__login--esqueceu, .box__login--cadastro {
+    color: var(--cinza-secundario);
+    text-decoration: none;
+    transition: 0.5s all;
+}
+
+.box__login--esqueceu:hover, .box__login--cadastro:hover {
+    color: var(--laranja-hover);
+    transform: scale(1.05);
+}
+
+.box__login--cadastro {
+    margin-top: -2em;
+}
+
+@media screen and (max-width: 500px) {
+    body {
+        background: var(--cor-de-fundo);
+    }
+}

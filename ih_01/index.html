@@ -7,25 +7,23 @@
         <link rel="stylesheet" href="reset.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="styles.css">
     </head>
 <body>
     <section class="box__login">
-        <h1 class="box__login--title box__login--item">Login</h1>
-        <form action="">
-            <label for="login__email" class="box__login--items">Email</label>
-            <input id="login__email" name="login__email" required="required" type="text" placeholder="contato@htmlecsspro.com" class="box__login--items"/>
+        <h1 class="box__login--title">Login</h1>
+        <form action="" class="box__login--form">
+            <input id="login__email" name="login__email" required="required" type="text" placeholder="seuemail@gmail.com" class="box__login--items box__login--items-email"/>
 
-            <label for="login__senha" class="box__login--items">Senha</label>
-            <input id="login__senha" name="login__senha" required="required" type="password" placeholder="senha" class="box__login--items"/> 
+            <input id="login__senha" name="login__senha" required="required" type="password" placeholder="senhasupimpa" class="box__login--items box__login--items-senha"/>
                 
-            <input type="submit" value="Submeter" class="enviar">
+            <a href="#" class="box__login--items-enviar">Login</a>
         </form>
 
-        <p>Esqueceu sua senha?</p>
+        <a href="#" class="box__login--esqueceu">Esqueceu sua senha?</a>
 
-        <a href="#" class="">Cadastre-se Agora!</a>
+        <a href="#" class="box__login--cadastro">Cadastre-se Agora!</a>
     </section>
 </body>
 </html>
