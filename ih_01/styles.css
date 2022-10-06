@@ -92,4 +92,9 @@ body {
     body {
         background: var(--cor-de-fundo);
     }
+
+    .box__login {
+        margin-top: 10em;
+        height: 50vh;
+    }
 }
