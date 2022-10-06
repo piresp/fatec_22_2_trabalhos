@@ -33,7 +33,7 @@ body {
 .box__login--title {
     margin-top: 1.8em;
     justify-self: center;
-    font-size: 23px;
+    font-size: 2em;
     font-weight: 700;
     color: var(--branco-principal);
 }
