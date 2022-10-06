@@ -38,7 +38,7 @@ body {
 }
 
 .box__login--items {
-    padding: 1.2em 3em;    
+    padding: 1.2em 3em;
     border: none;
     border-radius: 10px;
     display: block;
@@ -57,9 +57,11 @@ body {
     margin-top: 1em;
 
     background-color: var(--azul);
-    border-radius: 10px;
-    padding: 1em 7.8em;
     color: var(--branco-principal);
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 1em 7.7em;
+    
     display: block;
     text-decoration: none;
 
@@ -74,6 +76,7 @@ body {
 
 .box__login--esqueceu, .box__login--cadastro {
     color: var(--cinza-secundario);
+    font-size: 15px;
     text-decoration: none;
     transition: 0.5s all;
 }
