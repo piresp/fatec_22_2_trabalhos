@@ -38,7 +38,7 @@ body {
 }
 
 .box__login--items {
-    padding: 1.2em 3em;
+    padding: 1.2em 82px;
     border: none;
     border-radius: 10px;
     display: block;
@@ -60,7 +60,7 @@ body {
     color: var(--branco-principal);
     font-weight: 700;
     border-radius: 10px;
-    padding: 1em 7.7em;
+    padding: 1em 145px;
     border: none;
     
     display: block;
